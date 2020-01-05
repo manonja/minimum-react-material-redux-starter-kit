@@ -34,6 +34,7 @@
     "gulp-awspublish": "^4.1.0",
     "gulp-babel": "^8.0.0",
     "gulp-cached": "^1.1.1",
+    "gulp-concat": "^2.6.1",
     "gulp-htmlmin": "^5.0.1",
     "gulp-if": "^3.0.0",
     "gulp-minify": "^3.1.0",

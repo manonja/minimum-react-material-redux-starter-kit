@@ -10,6 +10,7 @@ const htmlmin = require("gulp-htmlmin");
 const awspublish = require("gulp-awspublish");
 const babel = require("gulp-babel");
 const sourcemaps = require("gulp-sourcemaps");
+const concat = require("gulp-concat");
 
 const paths = {
   base: {
