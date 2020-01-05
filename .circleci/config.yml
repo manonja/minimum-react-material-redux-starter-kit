@@ -58,7 +58,7 @@ jobs:
       - run: npm run cypress:verify
       - run: npm run stop-only
       - save_cache:
-          key: cache-dirs-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum "circle.yml" }}
+          key: cache-dirs-{{ .Branch }}-{{ checksum "package.json" }}-{{ checksum ".circleci/config.yml" }}
           paths:
             - ~/.npm
             - ~/.cache
@@ -81,7 +81,7 @@ jobs:
 
   # a single utility job that can run multiple examples one by one
   # but with chunking
-  test-examples:
+  test:
     parallelism: 20
     working_directory: ~/app
     docker:
@@ -97,7 +97,7 @@ jobs:
       - run: npm run test:ci -- --chunk $CIRCLE_NODE_INDEX --total-chunks $CIRCLE_NODE_TOTAL
 
   # a single utility script to run multiple examples against Chrome
-  test-examples-chrome:
+  test-chrome:
     parallelism: 10
     working_directory: ~/app
     docker:
@@ -114,7 +114,7 @@ jobs:
 # and then use this list from workflow definition
 all_jobs: &all_jobs
   - build
-  - test-examples:
+  - test:
       requires:
         - build
       filters:
@@ -123,7 +123,7 @@ all_jobs: &all_jobs
             - master
             - develop
 
-  - test-examples-chrome:
+  - test-chrome:
       requires:
         - build
       filters:
