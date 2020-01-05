@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node_modules/.bin/serve --listen ${PORT:-8080} src",
     "test": "node_modules/.bin/run-p --print-label --race start cy:run",
-    "stop-only": "node_modules/.bin/stop-only --folder examples --skip node_modules",
+    "stop-only": "node_modules/.bin/stop-only --folder . --skip node_modules",
     "cy:open": "node_modules/.bin/cypress open",
     "cy:run": "node_modules/.bin/cypress run",
     "cypress:verify": "node_modules/.bin/cypress verify",
