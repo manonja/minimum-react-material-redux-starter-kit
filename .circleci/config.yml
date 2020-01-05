@@ -82,7 +82,7 @@ jobs:
   # a single utility job that can run multiple examples one by one
   # but with chunking
   test:
-    parallelism: 20
+    parallelism: 2
     working_directory: ~/app
     docker:
       - image: cypress/base:10
@@ -98,7 +98,7 @@ jobs:
 
   # a single utility script to run multiple examples against Chrome
   test-chrome:
-    parallelism: 10
+    parallelism: 2
     working_directory: ~/app
     docker:
       - image: cypress/browsers:node12.0.0-chrome75
