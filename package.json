@@ -1,0 +1,48 @@
+{
+  "name": "minimum-bootstrap-starter-kit",
+  "version": "1.0.0",
+  "description": "bootstrap-starter-kit",
+  "main": "index.js",
+  "scripts": {
+    "start": "serve --listen ${PORT:-8080} src",
+    "test": "npm start & cypress run",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:record": "cypress run --record ",
+    "test:ci": "run-p --race start:ci e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manonja/minimum-bootstrap-starter-kit.git"
+  },
+  "author": "Manon Jacquin",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/manonja/minimum-bootstrap-starter-kit/issues"
+  },
+  "homepage": "https://github.com/manonja/minimum-bootstrap-starter-kit#readme",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "babel-core": "^6.26.3",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "browser-sync": "^2.26.7",
+    "cypress": "^3.8.1",
+    "eslint": "^6.8.0",
+    "gulp": "^4.0.2",
+    "gulp-awspublish": "^4.1.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-cached": "^1.1.1",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-if": "^3.0.0",
+    "gulp-minify": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-uglify": "^3.0.2",
+    "gulp-useref": "^4.0.0",
+    "gulp-watch": "^5.0.1",
+    "serve": "^11.2.0",
+    "start-server-and-test": "^1.10.6"
+  },
+  "browserslist": "> 0.25%, not dead"
+}
