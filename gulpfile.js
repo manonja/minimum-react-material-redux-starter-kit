@@ -12,6 +12,12 @@ const rollup = require("gulp-better-rollup");
 const babel = require("rollup-plugin-babel");
 const sourcemaps = require("gulp-sourcemaps");
 const concat = require("gulp-concat");
+const browserify = require('browserify');
+const babelify = require('babelify');
+const log = require('fancy-log');
+const source = require('vinyl-source-stream');
+
+
 
 const paths = {
   base: {
@@ -41,6 +47,10 @@ const paths = {
     base: {
       dir: "./src",
       files: "./src/**/*"
+    },
+    entry: {
+      dir: "./src/assets/js/",
+      files: "./src/assets/js/App.js"
     },
     css: {
       dir: "./src/assets/css",
@@ -119,25 +129,43 @@ gulp.task("watch", function() {
   gulp.watch([paths.src.html.files], gulp.series("browsersyncReload"));
 });
 
+const b = browserify({
+  entries: [paths.src.entry.files],
+  debug: true,
+  // TODO: check hmr and watchify
+  // plugin: [hmr, watchify],
+  cache: {},
+  // fullPaths: true,
+  packageCache: {}
+}).transform('svg-browserify')
+.transform('browserify-css', {
+  minify: true,
+  output: 'bundle.css'
+}).transform('babelify', {
+  presets: ["@babel/preset-env", "@babel/preset-react"]
+});
+
+
 gulp.task("js", function() {
-  return gulp
-    .src([paths.src.js.files])
-    .pipe(sourcemaps.init())
-    // .pipe(
-    //   babel()
-    // )
-    // .pipe(concat("all.js"))
-    // .pipe(sourcemaps.write("."))
-    .pipe(rollup({
-      // There is no `input` option as rollup integrates into the gulp pipeline
-      plugins: [babel({ runtimeHelpers: true })]
-    }, {
-      // Rollups `sourcemap` option is unsupported. Use `gulp-sourcemaps` plugin instead
-      format: 'cjs',
-    }))
-    // inlining the sourcemap into the exported .js file
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(paths.src.tmp.dir));
+  return b.bundle()
+  // .on('error', log.error('Browserify Error'))
+  .pipe(source('bundle.js'))
+  // .pipe(sourcemaps.init({loadMaps: true}))
+  // .pipe(
+  //   babel()
+  // )
+  // .pipe(concat("all.js"))
+  // .pipe(sourcemaps.write("."))
+  // .pipe(rollup({
+  //   // There is no `input` option as rollup integrates into the gulp pipeline
+  //   plugins: [babel({ runtimeHelpers: true })]
+  // }, {
+  //   // Rollups `sourcemap` option is unsupported. Use `gulp-sourcemaps` plugin instead
+  //   format: 'cjs',
+  // }))
+  // // inlining the sourcemap into the exported .js file
+  // .pipe(sourcemaps.write("."))
+  .pipe(gulp.dest(paths.src.tmp.dir));
 });
 
 gulp.task("js:build", function() {
