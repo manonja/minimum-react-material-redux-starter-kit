@@ -13,7 +13,7 @@
     "cy:run:record": "node_modules/.bin/cypress run --record ",
     "e2e": "node_modules/.bin/cypress run",
     "start:ci": "node_modules/.bin/serve --listen ${PORT:-8080} src",
-    "test:ci": "node_modules/.bin/run-p --race --print-label start:ci e2e", 
+    "test:ci": "node_modules/.bin/run-p --race --print-label start:ci e2e",
     "test:ci:chrome": "node_modules/.bin/run-p --race start:ci cypress:run:chrome",
     "cypress:run:chrome": "node_modules/.bin/cypress run --browser chrome"
   },
