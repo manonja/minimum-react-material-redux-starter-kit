@@ -16,8 +16,9 @@ const browserify = require('browserify');
 const babelify = require('babelify');
 const log = require('fancy-log');
 const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
 
-
+const svg = require('svg-browserify');
 
 const paths = {
   base: {
@@ -93,7 +94,7 @@ gulp.task("browsersync", function(callback) {
   browsersync.init({
     server: {
       // baseDir: [paths.src.tmp.dir, paths.src.base.dir, paths.base.base.dir]
-      baseDir: [paths.src.tmp.dir]
+      baseDir: [paths.src.tmp.dir, paths.src.css.dir]
     }
   });
   callback();
@@ -120,27 +121,34 @@ gulp.task("html:copy", function() {
   );
 });
 
+
 gulp.task("watch", function() {
   // gulp.watch(paths.src.scss.files, gulp.series(‘scss’));
   gulp.watch(
-    [paths.src.js.files, paths.src.img.files],
+    [paths.src.js.files, paths.src.css.files, paths.src.img.files],
     gulp.series("browsersyncReload")
   );
   gulp.watch([paths.src.html.files], gulp.series("browsersyncReload"));
 });
 
 const b = browserify({
+  insertGlobals: true,
   entries: [paths.src.entry.files],
   debug: true,
+  transform: svg,
   // TODO: check hmr and watchify
   // plugin: [hmr, watchify],
   cache: {},
   // fullPaths: true,
   packageCache: {}
-}).transform('svg-browserify')
+})
+// .transform(require('svg-reactify'), { default: 'image' })
 .transform('browserify-css', {
-  minify: true,
-  output: 'bundle.css'
+  autoInject: true,
+  rootDir: paths.base.dir,
+  processRelativeUrl: function(relativeUrl) {
+    return relativeUrl;
+  }
 }).transform('babelify', {
   presets: ["@babel/preset-env", "@babel/preset-react"]
 });
@@ -150,6 +158,7 @@ gulp.task("js", function() {
   return b.bundle()
   // .on('error', log.error('Browserify Error'))
   .pipe(source('bundle.js'))
+  // .pipe(buffer())
   // .pipe(sourcemaps.init({loadMaps: true}))
   // .pipe(
   //   babel()
