@@ -29,6 +29,7 @@
   "homepage": "https://github.com/manonja/minimum-bootstrap-starter-kit#readme",
   "devDependencies": {
     "@babel/core": "^7.7.7",
+    "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.7",
     "@babel/preset-react": "^7.7.4",
     "babel-core": "^6.26.3",
@@ -41,6 +42,7 @@
     "gulp": "^4.0.2",
     "gulp-awspublish": "^4.1.0",
     "gulp-babel": "^8.0.0",
+    "gulp-better-rollup": "^4.0.1",
     "gulp-cached": "^1.1.1",
     "gulp-concat": "^2.6.1",
     "gulp-htmlmin": "^5.0.1",
@@ -52,6 +54,8 @@
     "gulp-watch": "^5.0.1",
     "npm-run-all": "^4.1.5",
     "prop-types": "^15.7.2",
+    "rollup": "^1.29.0",
+    "rollup-plugin-babel": "^4.3.3",
     "serve": "^11.2.0",
     "start-server-and-test": "^1.10.6",
     "stop-only": "^3.1.0"

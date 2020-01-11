@@ -8,7 +8,8 @@ const cached = require("gulp-cached");
 const gulpif = require("gulp-if");
 const htmlmin = require("gulp-htmlmin");
 const awspublish = require("gulp-awspublish");
-const babel = require("gulp-babel");
+const rollup = require("gulp-better-rollup");
+const babel = require("rollup-plugin-babel");
 const sourcemaps = require("gulp-sourcemaps");
 const concat = require("gulp-concat");
 
@@ -81,7 +82,8 @@ gulp.task("browsersyncReload", function(callback) {
 gulp.task("browsersync", function(callback) {
   browsersync.init({
     server: {
-      baseDir: [paths.src.tmp.dir, paths.src.base.dir, paths.base.base.dir]
+      // baseDir: [paths.src.tmp.dir, paths.src.base.dir, paths.base.base.dir]
+      baseDir: [paths.src.tmp.dir]
     }
   });
   callback();
@@ -101,6 +103,13 @@ gulp.task("html", function() {
   );
 });
 
+gulp.task("html:copy", function() {
+  return (
+    gulp.src(paths.src.html.files)
+    .pipe(gulp.dest(paths.src.tmp.dir))
+  );
+});
+
 gulp.task("watch", function() {
   // gulp.watch(paths.src.scss.files, gulp.series(‘scss’));
   gulp.watch(
@@ -112,14 +121,21 @@ gulp.task("watch", function() {
 
 gulp.task("js", function() {
   return gulp
-    .src(["node_modules/babel-polyfill/dist/polyfill.js", paths.src.js.files])
+    .src([paths.src.js.files])
     .pipe(sourcemaps.init())
-    .pipe(
-      babel({
-        presets: ["@babel/preset-env"]
-      })
-    )
-    .pipe(concat("all.js"))
+    // .pipe(
+    //   babel()
+    // )
+    // .pipe(concat("all.js"))
+    // .pipe(sourcemaps.write("."))
+    .pipe(rollup({
+      // There is no `input` option as rollup integrates into the gulp pipeline
+      plugins: [babel({ runtimeHelpers: true })]
+    }, {
+      // Rollups `sourcemap` option is unsupported. Use `gulp-sourcemaps` plugin instead
+      format: 'cjs',
+    }))
+    // inlining the sourcemap into the exported .js file
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(paths.src.tmp.dir));
 });
@@ -136,7 +152,7 @@ gulp.task("js:build", function() {
 
 gulp.task("build", gulp.parallel(gulp.series("js", "js:build"), "html"));
 
-gulp.task("default", gulp.series("js", gulp.parallel("browsersync", "watch")));
+gulp.task("default", gulp.series("html:copy", "js", gulp.parallel("browsersync", "watch")));
 
 gulp.task("publish:AWS", function() {
   // create a new publisher using S3 options
