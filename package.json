@@ -53,5 +53,9 @@
     "start-server-and-test": "^1.10.6",
     "stop-only": "^3.1.0"
   },
-  "browserslist": "> 0.25%, not dead"
+  "browserslist": "> 0.25%, not dead",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
 }
