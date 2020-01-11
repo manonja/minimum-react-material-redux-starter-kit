@@ -145,7 +145,7 @@ gulp.task("publish:AWS", function() {
     {
       region: "eu-west-2",
       params: {
-        Bucket: "bootstrap-starter-kit"
+        Bucket: "minimum-react-material-redux-starter-kit"
       }
     },
     {
