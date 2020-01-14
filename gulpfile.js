@@ -18,8 +18,6 @@ const log = require('fancy-log');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 
-const svg = require('svg-browserify');
-
 const paths = {
   base: {
     base: {
@@ -135,20 +133,19 @@ const b = browserify({
   insertGlobals: true,
   entries: [paths.src.entry.files],
   debug: true,
-  transform: svg,
   // TODO: check hmr and watchify
   // plugin: [hmr, watchify],
   cache: {},
   // fullPaths: true,
   packageCache: {}
 })
-// .transform(require('svg-reactify'), { default: 'image' })
 .transform('browserify-css', {
-  autoInject: true,
+  // autoInject: true,
   rootDir: paths.base.dir,
   processRelativeUrl: function(relativeUrl) {
     return relativeUrl;
-  }
+  },
+  bundle: `${paths.src.tmp.dir}/bundle.css` 
 }).transform('babelify', {
   presets: ["@babel/preset-env", "@babel/preset-react"]
 });
