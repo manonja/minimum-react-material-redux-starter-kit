@@ -49,7 +49,7 @@ const paths = {
     },
     entry: {
       dir: "./src/assets/js/",
-      files: "./src/assets/js/index.js"
+      files: "./src/assets/js/App.js"
     },
     css: {
       dir: "./src/assets/css",
